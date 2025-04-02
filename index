@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação de Certificados</title>
+</head>
+<body>
+    <h2>Digite seu código de verificação:</h2>
+    <input type="text" id="codigo" placeholder="Digite o código">
+    <button onclick="verificarCodigo()">Verificar</button>
+    <p id="resultado"></p>
+
+    <script>
+        async function verificarCodigo() {
+            const codigo = document.getElementById("codigo").value;
+            const url = "https://script.google.com/macros/s/AKfycbw7Thn43m_9up7MDVjMQMafmBdVmLFTSgJkqJ-wYCXcH1SfMEc6oCf_wO7tyCOGxzYTtg/exec"; // Substitua pela URL do Apps Script
+            
+            try {
+                const resposta = await fetch(url);
+                const dados = await resposta.json();
+
+                // Verifica se o código digitado existe na planilha
+                const certificado = dados.find(item => item.codigo === codigo);
+
+                if (certificado) {
+                    document.getElementById("resultado").innerText = 
+                        `Certificado válido para: ${certificado.nome}`;
+                } else {
+                    document.getElementById("resultado").innerText = 
+                        "Código inválido ou não encontrado.";
+                }
+            } catch (erro) {
+                console.error("Erro ao buscar os dados:", erro);
+                document.getElementById("resultado").innerText = 
+                    "Erro ao verificar o código.";
+            }
+        }
+    </script>
+</body>
+</html>
