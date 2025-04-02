@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação de Certificado</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        input, button { margin: 10px; padding: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Verificação de Certificado</h2>
+    <p>Digite o código do certificado para verificar sua autenticidade.</p>
+    <input type="text" id="codigo" placeholder="Digite o código">
+    <button onclick="verificarCertificado()">Verificar</button>
+    <p id="resultado"></p><script>
+    function verificarCertificado() {
+        var codigo = document.getElementById("codigo").value;
+        if (!codigo) {
+            document.getElementById("resultado").innerText = "Por favor, insira um código válido.";
+            return;
+        }
+        
+        fetch("SEU_SCRIPT_ID_AQUI?codigo=" + codigo)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("resultado").innerHTML = 
+                        `<strong>Certificado Válido!</strong><br>
+                        Nome: ${data.nome} <br>
+                        Curso: ${data.curso} <br>
+                        Data de Conclusão: ${data.data}`;
+                } else {
+                    document.getElementById("resultado").innerText = "Código inválido ou certificado não encontrado.";
+                }
+            })
+            .catch(error => {
+                document.getElementById("resultado").innerText = "Erro ao verificar. Tente novamente mais tarde.";
+            });
+    }
+</script>
+
+</body>
+</html>
